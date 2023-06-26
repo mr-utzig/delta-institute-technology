@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  db:
+    image: docker.io/bitnami/mysql:8.0
+    ports:
+      - '3306:3306'
+    restart: always
+    volumes:
+      - './db/data:/var/lib/mysql'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_USER=dit_su
+      - MYSQL_DATABASE=dit_database
+  backend:
+    image: docker.io/bitnami/codeigniter:4
+    ports:
+      - '8000:8000'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - CODEIGNITER_DATABASE_HOST=db
+      - CODEIGNITER_DATABASE_PORT_NUMBER=3306
+      - CODEIGNITER_DATABASE_USER=dit_su
+      - CODEIGNITER_DATABASE_NAME=dit_database
+      - CODEIGNITER_PROJECT_NAME=backend
+    volumes:
+      - '.:/app'
+    depends_on:
+      - db
