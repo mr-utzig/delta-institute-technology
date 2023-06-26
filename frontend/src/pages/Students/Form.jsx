@@ -13,7 +13,7 @@ function StudentForm() {
         address: {
             zipcode: "",
             street: "",
-            county: "",
+            neighborhood: "",
             city: "",
             state: "",
             number: "",
@@ -64,7 +64,7 @@ function StudentForm() {
             address: {
                 ...student.address,
                 street: data.logradouro,
-                county: data.bairro,
+                neighborhood: data.bairro,
                 city: data.localidade,
                 state: data.uf
             }
@@ -235,14 +235,14 @@ function StudentForm() {
                             </div>
                         </div>
                         <div className="sm:col-span-2">
-                            <label htmlFor="county" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="neighborhood" className="block text-sm font-medium leading-6 text-gray-900">
                                 Bairro
                             </label>
                             <div className="mt-2">
                                 <input
                                     type="text"
-                                    id="county"
-                                    value={student.address.county}
+                                    id="neighborhood"
+                                    value={student.address.neighborhood}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 bg-gray-100 sm:text-sm sm:leading-6"
                                     disabled
                                 />
