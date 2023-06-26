@@ -7,7 +7,7 @@ services:
       - '3306:3306'
     restart: always
     volumes:
-      - './db/data:/var/lib/mysql'
+      - 'mysql_data:/var/lib/mysql:rw,size=10g'
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=dit_database
@@ -28,3 +28,5 @@ services:
       - '.:/app'
     depends_on:
       - db
+volumes:
+  mysql_data:
