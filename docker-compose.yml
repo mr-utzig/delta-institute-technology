@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:8.0
+    ports:
+      - '3305:3306'
+    restart: always
+    volumes:
+      - 'mysql_data:/var/lib/mysql:rw,size=10g'
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=dit_database
+      - MYSQL_USER=dit_user
+      - MYSQL_PASSWORD=dit_userpw
+  backend:
+    image: docker.io/bitnami/codeigniter:4
+    ports:
+      - '8000:8000'
+    environment:
+      - CODEIGNITER_DATABASE_HOST=db
+      - CODEIGNITER_DATABASE_PORT_NUMBER=3306
+      - CODEIGNITER_DATABASE_NAME=dit_database
+      - CODEIGNITER_DATABASE_USER=dit_user
+      - CODEIGNITER_DATABASE_PASSWORD=dit_userpw
+      - CODEIGNITER_PROJECT_NAME=backend
+    volumes:
+      - '.:/app'
+    depends_on:
+      - db
+volumes:
+  mysql_data:
