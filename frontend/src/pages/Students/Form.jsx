@@ -150,7 +150,7 @@ function StudentForm() {
     }
 
     return (
-        <form className="py-5 bg-white" onSubmit={handleFormSubmit}>
+        <form className="p-5 bg-white" onSubmit={handleFormSubmit}>
             <button type="submit" disabled className='hidden'></button>
             <div className="max-w-7xl mx-auto">
                 <div>
@@ -158,8 +158,8 @@ function StudentForm() {
                 </div>
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                        <div className="col-span-full">
-                            <div className="mt-2 flex items-center gap-x-3">
+                        <div className="col-span-6 sm:col-span-full">
+                            <div className="mt-2 flex flex-col sm:flex-row items-center gap-x-3 ">
                                 {student.photo ? (
                                     <img src={student.photo instanceof File ? URL.createObjectURL(student?.photo) : `http://127.0.0.1:8000/${student?.photo}`} alt="Foto do aluno" className="h-24 w-24 border-2 border-[--dit-blue] rounded-[3rem]" />
                                 ) : (
@@ -175,7 +175,7 @@ function StudentForm() {
                                 <input type="file" id="photo" className='hidden' onChange={handlePhotoSelection} />
                             </div>
                         </div>
-                        <div className="sm:col-span-3">
+                        <div className="col-span-6 sm:col-span-3">
                             <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
                                 Primeiro nome
                             </label>
@@ -190,7 +190,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="sm:col-span-3">
+                        <div className="col-span-6 sm:col-span-3">
                             <label htmlFor="lastName" className="block text-sm font-medium leading-6 text-gray-900">
                                 Último nome
                             </label>
@@ -205,7 +205,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="sm:col-span-2">
+                        <div className="col-span-6 sm:col-span-2">
                             <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
                                 Celular
                             </label>
@@ -219,7 +219,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="sm:col-span-4">
+                        <div className="col-span-6 sm:col-span-4">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 E-mail
                             </label>
@@ -235,7 +235,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="sm:col-span-3">
+                        <div className="col-span-6 sm:col-span-3">
                             <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
                                 País
                             </label>
@@ -249,11 +249,11 @@ function StudentForm() {
                                 </select>
                             </div>
                         </div>
-                        <div className="sm:col-span-1 sm:col-start-1">
+                        <div className="col-span-6 sm:col-span-1 sm:col-start-1">
                             <label htmlFor="zipcode" className="block text-sm font-medium leading-6 text-gray-900">
                                 CEP
                             </label>
-                            <div className="mt-2">
+                            <div className="mt-3">
                                 <input
                                     type="number"
                                     id="zipcode"
@@ -265,7 +265,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="sm:col-span-1">
+                        <div className="col-span-6 sm:col-span-1">
                             <label htmlFor="state" className="block text-sm font-medium leading-6 text-gray-900">
                                 Estado
                             </label>
@@ -279,7 +279,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="sm:col-span-2">
+                        <div className="col-span-6 sm:col-span-2">
                             <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
                                 Cidade
                             </label>
@@ -293,7 +293,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="sm:col-span-2">
+                        <div className="col-span-6 sm:col-span-2">
                             <label htmlFor="neighborhood" className="block text-sm font-medium leading-6 text-gray-900">
                                 Bairro
                             </label>
@@ -307,7 +307,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="col-span-3">
+                        <div className="col-span-6 sm:col-span-3">
                             <label htmlFor="street" className="block text-sm font-medium leading-6 text-gray-900">
                                 Endereço
                             </label>
@@ -321,7 +321,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="col-span-1">
+                        <div className="col-span-6 sm:col-span-1">
                             <label htmlFor="number" className="block text-sm font-medium leading-6 text-gray-900">
                                 Número
                             </label>
@@ -336,7 +336,7 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-6 sm:col-span-2">
                             <label htmlFor="complement" className="block text-sm font-medium leading-6 text-gray-900">
                                 Complemento
                             </label>
@@ -371,7 +371,7 @@ function StudentForm() {
                             Excluir
                         </button> : ""}
                     </div>
-                    <div className='flex gap-x-6'>
+                    <div className='flex gap-2 sm:gap-6'>
                         <Link to={"/"} className="flex gap-2 text-sm px-2 py-3 border rounded-md font-semibold text-gray-900">
                             <ArrowUturnLeftIcon className='w-5 h-5' />
                             Voltar
