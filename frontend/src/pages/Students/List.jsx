@@ -109,7 +109,7 @@ function ContentTable() {
 
 function StudentsList() {
     return (
-        <div className="py-5 bg-white min-h-[90vh]">
+        <div className="py-5 bg-white min-h-[100vh]">
             <div className="max-w-7xl mx-auto">
                 <div className="px-4 sm:px-6 lg:px-8">
                     <ListHeader />
