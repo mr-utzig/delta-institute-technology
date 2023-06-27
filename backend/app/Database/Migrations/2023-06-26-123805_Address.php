@@ -47,7 +47,7 @@ class Address extends Migration
             'complement' => [
                 'type' => 'VARCHAR',
                 'constraint' => 150,
-                'null' => true
+                'default' => ''
             ],
         ]);
 

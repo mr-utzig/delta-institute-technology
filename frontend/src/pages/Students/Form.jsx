@@ -1,11 +1,16 @@
-import { UserCircleIcon } from '@heroicons/react/24/solid'
+import { ArrowUturnLeftIcon, CheckBadgeIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, CloudArrowUpIcon, ExclamationCircleIcon, ExclamationTriangleIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 function StudentForm() {
     const { id } = useParams();
+    const [response, setResponse] = useState({
+        status: null,
+        message: null
+    });
     const [student, setStudent] = useState({
-        photo: null,
+        photo: undefined,
         firstName: "",
         lastName: "",
         phone: "",
@@ -13,7 +18,7 @@ function StudentForm() {
         address: {
             zipcode: "",
             street: "",
-            county: "",
+            neighborhood: "",
             city: "",
             state: "",
             number: "",
@@ -50,9 +55,65 @@ function StudentForm() {
 
         const formdata = new FormData();
         for (const key in student) {
-            formdata.append(key, student[key]);
-            console.log(key, student[key]);
+            if (key == 'address') {
+                for (const keyA in student.address) {
+                    formdata.append(keyA, student.address[keyA]);
+                }
+            } else {
+                formdata.append(key, student[key]);
+            }
         }
+
+        if (id) {
+            return putRequest(formdata);
+        }
+
+        return postRequest(formdata);
+    }
+
+    async function postRequest(fd) {
+        await fetch(`http://127.0.0.1:8000/api/v1/students`, {
+            method: 'POST',
+            body: fd
+        })
+            .then(response => response.json())
+            .then(response => {
+                setResponse(response);
+                setTimeout(() => location.href = "/", 1500);
+            })
+            .catch(err => console.log(err));
+    }
+
+    async function putRequest(fd) {
+        fd.append('_method', 'PUT');
+
+        await fetch(`http://127.0.0.1:8000/api/v1/students/${id}`, {
+            method: 'POST',
+            body: fd
+        })
+            .then(response => response.json())
+            .then(response => {
+                setResponse(response);
+                setTimeout(() => location.reload(), 1500);
+            })
+            .catch(err => console.log(err));
+    }
+
+    async function handleStudentDeletion(e) {
+        e.preventDefault();
+        const formdata = new FormData();
+        formdata.append('_method', 'DELETE');
+
+        await fetch(`http://127.0.0.1:8000/api/v1/students/${id}`, {
+            method: 'POST',
+            body: formdata
+        })
+            .then(response => response.json())
+            .then(response => {
+                setResponse(response);
+                setTimeout(() => location.reload(), 1500);
+            })
+            .catch(err => console.log(err));
     }
 
     async function getAddressDataByZip() {
@@ -64,35 +125,29 @@ function StudentForm() {
             address: {
                 ...student.address,
                 street: data.logradouro,
-                county: data.bairro,
+                neighborhood: data.bairro,
                 city: data.localidade,
                 state: data.uf
             }
         });
     }
 
-    const getStudentData = async () => {
-        const data = await (await fetch("https://jsonplaceholder.typicode.com/users/" + id)).json();
-
-        setStudent({
-            firstName: data.name.split(" ")[0],
-            lastName: data.name.split(" ")[1],
-            email: data.email,
-            phone: data.phone,
-            address: {
-                ...student.address,
-                zipcode: data.address.zipcode,
-                street: data.address.street,
-                city: data.address.city,
-                complement: data.address.suite.split(" ")[0],
-                number: data.address.suite.split(" ")[1]
-            }
-        });
+    function handleResponse() {
+        if (response.status == 200 || response.status == 201) return true;
+        return false;
     }
 
-    useEffect(() => {
-        getStudentData();
-    }, [id]);
+    if (id) {
+        const getStudentData = async () => {
+            const data = await (await fetch(`http://127.0.0.1:8000/api/v1/students/${id}`)).json();
+
+            setStudent({ ...data });
+        }
+
+        useEffect(() => {
+            getStudentData();
+        }, []);
+    }
 
     return (
         <form className="py-5 bg-white" onSubmit={handleFormSubmit}>
@@ -106,7 +161,7 @@ function StudentForm() {
                         <div className="col-span-full">
                             <div className="mt-2 flex items-center gap-x-3">
                                 {student.photo ? (
-                                    <img src={URL.createObjectURL(student?.photo)} alt="Foto do aluno" className="h-24 w-24 border-2 border-[--dit-blue] rounded-[3rem]" />
+                                    <img src={student.photo instanceof File ? URL.createObjectURL(student?.photo) : `http://127.0.0.1:8000/${student?.photo}`} alt="Foto do aluno" className="h-24 w-24 border-2 border-[--dit-blue] rounded-[3rem]" />
                                 ) : (
                                     <UserCircleIcon className="h-24 w-24 text-gray-300" aria-hidden="true" />
                                 )}
@@ -131,6 +186,7 @@ function StudentForm() {
                                     value={student.firstName}
                                     onChange={handleStudentChange}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[--dit-blue] sm:text-sm sm:leading-6"
+                                    required
                                 />
                             </div>
                         </div>
@@ -141,10 +197,11 @@ function StudentForm() {
                             <div className="mt-2">
                                 <input
                                     type="text"
-                                    name="lastName"
+                                    id="lastName"
                                     value={student.lastName}
                                     onChange={handleStudentChange}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[--dit-blue] sm:text-sm sm:leading-6"
+                                    required
                                 />
                             </div>
                         </div>
@@ -174,6 +231,7 @@ function StudentForm() {
                                     onChange={handleStudentChange}
                                     autoComplete="email"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[--dit-blue] sm:text-sm sm:leading-6"
+                                    required
                                 />
                             </div>
                         </div>
@@ -197,12 +255,13 @@ function StudentForm() {
                             </label>
                             <div className="mt-2">
                                 <input
-                                    type="text"
+                                    type="number"
                                     id="zipcode"
                                     value={student.address.zipcode}
                                     onChange={handleStudentAddressChange}
                                     onBlur={getAddressDataByZip}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[--dit-blue] sm:text-sm sm:leading-6"
+                                    required
                                 />
                             </div>
                         </div>
@@ -235,14 +294,14 @@ function StudentForm() {
                             </div>
                         </div>
                         <div className="sm:col-span-2">
-                            <label htmlFor="county" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="neighborhood" className="block text-sm font-medium leading-6 text-gray-900">
                                 Bairro
                             </label>
                             <div className="mt-2">
                                 <input
                                     type="text"
-                                    id="county"
-                                    value={student.address.county}
+                                    id="neighborhood"
+                                    value={student.address.neighborhood}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 bg-gray-100 sm:text-sm sm:leading-6"
                                     disabled
                                 />
@@ -262,6 +321,21 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
+                        <div className="col-span-1">
+                            <label htmlFor="number" className="block text-sm font-medium leading-6 text-gray-900">
+                                Número
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    type="number"
+                                    id="number"
+                                    value={student.address.number}
+                                    onChange={handleStudentAddressChange}
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[--dit-blue] sm:text-sm sm:leading-6"
+                                    required
+                                />
+                            </div>
+                        </div>
                         <div className="col-span-2">
                             <label htmlFor="complement" className="block text-sm font-medium leading-6 text-gray-900">
                                 Complemento
@@ -276,32 +350,40 @@ function StudentForm() {
                                 />
                             </div>
                         </div>
-                        <div className="col-span-1">
-                            <label htmlFor="number" className="block text-sm font-medium leading-6 text-gray-900">
-                                Número
-                            </label>
-                            <div className="mt-2">
-                                <input
-                                    type="text"
-                                    id="number"
-                                    value={student.address.number}
-                                    onChange={handleStudentAddressChange}
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[--dit-blue] sm:text-sm sm:leading-6"
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
-                <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <Link to={"/"} className="text-sm font-semibold leading-6 text-gray-900">
-                        Voltar
-                    </Link>
-                    <button
-                        type="submit"
-                        className="rounded-md bg-[--dit-blue] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                    >
-                        Salvar
-                    </button>
+                {response.status ? <div className='mt-6 flex justify-end'>
+                    <div className={`flex rounded-md shadow gap-2 p-2 ${handleResponse() ? 'bg-green-100' : 'bg-yellow-100'}`}>
+                        {handleResponse()
+                            ? <CheckCircleIcon className={`w-7 h-7 ${handleResponse() ? 'text-green-400' : 'text-yellow-400'}`} />
+                            : <ExclamationTriangleIcon className={`w-7 h-7 ${handleResponse() ? 'text-green-400' : 'text-yellow-400'}`} />
+                        }
+                        <span className={`${handleResponse() ? 'text-green-800' : 'text-yellow-800'}`}>{response.message ?? "Messagem não encontrada"}</span>
+                    </div>
+                </div> : ""}
+                <div className="mt-6 flex items-center justify-between">
+                    <div>
+                        {id ? <button
+                            onClick={handleStudentDeletion}
+                            className="flex gap-2 rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80"
+                        >
+                            <TrashIcon className='w-5 h-5' />
+                            Excluir
+                        </button> : ""}
+                    </div>
+                    <div className='flex gap-x-6'>
+                        <Link to={"/"} className="flex gap-2 text-sm px-2 py-3 border rounded-md font-semibold text-gray-900">
+                            <ArrowUturnLeftIcon className='w-5 h-5' />
+                            Voltar
+                        </Link>
+                        <button
+                            type="submit"
+                            className="flex gap-2 items-center rounded-md bg-[--dit-blue] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80"
+                        >
+                            <CloudArrowUpIcon className='w-5 h-5' />
+                            Salvar
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>

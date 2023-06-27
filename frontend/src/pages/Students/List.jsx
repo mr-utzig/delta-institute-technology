@@ -22,14 +22,16 @@ function ListHeader() {
 
 function ContentTableRow({ student }) {
     const studentId = `student_${student.id}`;
+    const fullName = `${student.firstName} ${student.lastName}`;
+
     return (
         <tr id={studentId}>
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{student.name}</td>
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{fullName}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{student.email}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{student.phone}</td>
             <td className="whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-0">
                 <Link to={"/alunos/" + student.id} className="flex items-center justify-end gap-1 text-[--dit-blue] hover:text-[--dit-dark-blue]">
-                    <PencilSquareIcon className="w-5 h-5" /> Editar<span className="hidden">, {student.name}</span>
+                    <PencilSquareIcon className="w-5 h-5" /> Editar<span className="hidden">, {fullName}</span>
                 </Link>
             </td>
         </tr>
@@ -67,7 +69,7 @@ function ContentTable() {
     const [isLoading, setIsLoading] = useState(true);
 
     const dataFetch = async () => {
-        const data = await (await fetch("https://jsonplaceholder.typicode.com/users")).json();
+        const data = await (await fetch("http://127.0.0.1:8000/api/v1/students")).json();
 
         setIsLoading(false);
         setStudents(data);

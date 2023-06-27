@@ -12,11 +12,13 @@ const router = createBrowserRouter([
     },
     {
         path: "/alunos/:id",
-        element: <StudentForm />
+        element: <StudentForm />,
+        errorElement: <ErrorRoute />
     },
     {
         path: "/alunos",
-        element: <StudentForm />
+        element: <StudentForm />,
+        errorElement: <ErrorRoute />
     }
 ]);
 

@@ -30,7 +30,7 @@ class Users extends Migration
             'phone' => [
                 'type' => 'VARCHAR',
                 'constraint' => 50,
-                'null' => true
+                'default' => ''
             ],
             'photo' => [
                 'type' => 'VARCHAR',

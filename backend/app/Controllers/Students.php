@@ -7,8 +7,9 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Students extends ResourceController
 {
-    protected $modelName = 'App\Models\StudentModel';
+    const PATH_TO_UPLOAD = 'public/assets/img/students';
 
+    protected $modelName = 'App\Models\StudentModel';
     /**
      * Return an array of resource objects, themselves in array format
      *
@@ -16,7 +17,7 @@ class Students extends ResourceController
      */
     public function index()
     {
-        return $this->respond($this->model->findAll());
+        return $this->respond($this->model->findAll(), 200);
     }
 
     /**
@@ -31,9 +32,9 @@ class Students extends ResourceController
             $address = new AddressModel();
 
             $data = $student[0];
-            $data['address'] = $address->find(['id' => $student[0]['address_id']]);
+            $data['address'] = $address->find(['id' => $student[0]['address_id']])[0];
 
-            return $this->respond($data);
+            return $this->respond($data, 200);
         }
 
         return $this->failNotFound('Aluno não encontrado!', 404);
@@ -62,7 +63,7 @@ class Students extends ResourceController
         $image = $this->request->getFile('photo');
         if ($image && $image->isValid() && !$image->hasMoved()) {
             $fileName = $image->getRandomName();
-            $image->move(ROOTPATH . 'public/assets/img/students', $fileName);
+            $image->move(ROOTPATH . self::PATH_TO_UPLOAD, $fileName);
         }
 
         if (!$this->model->insert([
@@ -73,6 +74,7 @@ class Students extends ResourceController
             'photo' => $fileName ? "assets/img/students/{$fileName}" : null,
             'address_id' => $addressId
         ])) {
+            if ($fileName) unlink(ROOTPATH . self::PATH_TO_UPLOAD . $fileName);
             $address->delete($addressId);
             return $this->failValidationErrors($this->model->errors(), 400);
         }
@@ -95,13 +97,13 @@ class Students extends ResourceController
 
         $fileName = "";
         $image = $this->request->getFile('photo');
-        if ($image->isValid() && !$image->hasMoved()) {
+        if ($image && $image->isValid() && !$image->hasMoved()) {
             if (!empty($studentData[0]["photo"])) {
                 unlink(ROOTPATH . 'public/' . $studentData[0]["photo"]);
             }
 
             $fileName = $image->getRandomName();
-            $image->move(ROOTPATH . 'public/assets/img/students', $fileName);
+            $image->move(ROOTPATH . self::PATH_TO_UPLOAD, $fileName);
         }
 
         if (!$this->model->update($id, [
@@ -113,7 +115,7 @@ class Students extends ResourceController
         ])) return $this->failValidationErrors($this->model->errors(), 400);
 
         $address = new AddressModel();
-        if (!$address->update($studentData[0]['address_id'], [
+        if (!$address->update($this->request->getPost('address_id'), [
             'zipcode' => $this->request->getPost('zipcode'),
             'street' => $this->request->getPost('street'),
             'neighborhood' => $this->request->getPost('neighborhood'),
@@ -121,11 +123,14 @@ class Students extends ResourceController
             'state' => $this->request->getPost('state'),
             'number' => $this->request->getPost('number'),
             'complement' => $this->request->getPost('complement')
-        ])) return $this->failValidationErrors($address->errors(), 400);
+        ])) {
+            if ($fileName) unlink(ROOTPATH . self::PATH_TO_UPLOAD . $fileName);
+            return $this->failValidationErrors($address->errors(), 400);
+        }
 
         return $this->respondUpdated([
             'status' => 200,
-            'messages' => 'Cadastro do aluno editado com sucesso!'
+            'message' => 'Cadastro do aluno editado com sucesso!'
         ]);
     }
 
@@ -141,9 +146,7 @@ class Students extends ResourceController
 
         return $this->respondDeleted([
             'status' => 200,
-            'messages' => [
-                'success' => 'Aluno removido com sucesso'
-            ]
+            'message' => 'Aluno removido com sucesso'
         ]);
     }
 }
