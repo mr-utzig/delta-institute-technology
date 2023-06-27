@@ -1,0 +1,190 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "dit",
+    "dateExported": "2023-06-27T02:56:19.502Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "6907c454-1551-4e4e-9ce1-1d3fe7d4c42d",
+            "colId": "7117f91f-b56c-4efe-8cd5-524248203078",
+            "containerId": "",
+            "name": "Index",
+            "url": "http://localhost:8000/api/v1/students",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-06-27T01:40:44.010Z",
+            "modified": "2023-06-27T01:43:01.469Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "41706ae3-f578-4cd6-827c-06df329a7eca",
+            "colId": "7117f91f-b56c-4efe-8cd5-524248203078",
+            "containerId": "",
+            "name": "Show",
+            "url": "http://localhost:8000/api/v1/students/2",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-06-27T01:40:50.489Z",
+            "modified": "2023-06-27T01:57:02.638Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "d50d3c42-29f0-4bcb-b5ca-e847819635a6",
+            "colId": "7117f91f-b56c-4efe-8cd5-524248203078",
+            "containerId": "",
+            "name": "Create",
+            "url": "http://localhost:8000/api/v1/students",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-06-27T01:41:49.925Z",
+            "modified": "2023-06-27T02:49:47.791Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "multipart/form-data",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "firstName",
+                        "value": "juquinha"
+                    },
+                    {
+                        "name": "lastName",
+                        "value": "Legal"
+                    },
+                    {
+                        "name": "email",
+                        "value": "judf@teste.com"
+                    },
+                    {
+                        "name": "phone",
+                        "value": "51995324432"
+                    },
+                    {
+                        "name": "zipcode",
+                        "value": "93310240"
+                    },
+                    {
+                        "name": "number",
+                        "value": "381"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "988bb380-116d-4af3-a781-ee00ffc2ab9f",
+            "colId": "7117f91f-b56c-4efe-8cd5-524248203078",
+            "containerId": "",
+            "name": "Update",
+            "url": "http://localhost:8000/api/v1/students/2",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-06-27T01:42:03.947Z",
+            "modified": "2023-06-27T02:54:50.414Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Content-Type",
+                    "value": "",
+                    "isDisabled": true
+                },
+                {
+                    "name": "Content-Length",
+                    "value": "1000",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "firstName",
+                        "value": "luiz"
+                    },
+                    {
+                        "name": "lastName",
+                        "value": "utzs"
+                    },
+                    {
+                        "name": "email",
+                        "value": "abfs@teste.com"
+                    },
+                    {
+                        "name": "zipcode",
+                        "value": "33310240"
+                    },
+                    {
+                        "name": "number",
+                        "value": "123"
+                    },
+                    {
+                        "name": "_method",
+                        "value": "PUT"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "photo",
+                        "value": "/home/luiz.utzig@messem.local/Pictures/Screenshot from 2023-06-24 11-30-28.png"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "3ae57554-e2bd-4a06-a356-57104cfd3908",
+            "colId": "7117f91f-b56c-4efe-8cd5-524248203078",
+            "containerId": "",
+            "name": "Delete",
+            "url": "http://localhost:8000/api/v1/students/5",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-06-27T01:42:08.893Z",
+            "modified": "2023-06-27T02:55:51.961Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "_method",
+                        "value": "DELETE"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}
