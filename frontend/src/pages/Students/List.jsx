@@ -69,7 +69,7 @@ function ContentTable() {
     const [isLoading, setIsLoading] = useState(true);
 
     const dataFetch = async () => {
-        const data = await (await fetch("http://127.0.0.1:8000/api/v1/students")).json();
+        const data = await (await fetch(`http://${import.meta.env.VITE_API_IP ?? '127.0.0.1:8000'}/api/v1/students`)).json();
 
         setIsLoading(false);
         setStudents(data);

@@ -72,7 +72,7 @@ function StudentForm() {
     }
 
     async function postRequest(fd) {
-        await fetch(`http://127.0.0.1:8000/api/v1/students`, {
+        await fetch(`http://${import.meta.env.VITE_API_IP ?? '127.0.0.1:8000'}/api/v1/students`, {
             method: 'POST',
             body: fd
         })
@@ -87,7 +87,7 @@ function StudentForm() {
     async function putRequest(fd) {
         fd.append('_method', 'PUT');
 
-        await fetch(`http://127.0.0.1:8000/api/v1/students/${id}`, {
+        await fetch(`http://${import.meta.env.VITE_API_IP ?? '127.0.0.1:8000'}/api/v1/students/${id}`, {
             method: 'POST',
             body: fd
         })
@@ -104,7 +104,7 @@ function StudentForm() {
         const formdata = new FormData();
         formdata.append('_method', 'DELETE');
 
-        await fetch(`http://127.0.0.1:8000/api/v1/students/${id}`, {
+        await fetch(`http://${import.meta.env.VITE_API_IP ?? '127.0.0.1:8000'}/api/v1/students/${id}`, {
             method: 'POST',
             body: formdata
         })
@@ -139,7 +139,7 @@ function StudentForm() {
 
     if (id) {
         const getStudentData = async () => {
-            const data = await (await fetch(`http://127.0.0.1:8000/api/v1/students/${id}`)).json();
+            const data = await (await fetch(`http://${import.meta.env.VITE_API_IP ?? '127.0.0.1:8000'}/api/v1/students/${id}`)).json();
 
             setStudent({ ...data });
         }
@@ -161,7 +161,7 @@ function StudentForm() {
                         <div className="col-span-6 sm:col-span-full">
                             <div className="mt-2 flex flex-col sm:flex-row items-center gap-x-3 ">
                                 {student.photo ? (
-                                    <img src={student.photo instanceof File ? URL.createObjectURL(student?.photo) : `http://127.0.0.1:8000/${student?.photo}`} alt="Foto do aluno" className="h-24 w-24 border-2 border-[--dit-blue] rounded-[3rem]" />
+                                    <img src={student.photo instanceof File ? URL.createObjectURL(student?.photo) : `http://${import.meta.env.VITE_API_IP ?? '127.0.0.1:8000' }/${student?.photo}`} alt="Foto do aluno" className="h-24 w-24 border-2 border-[--dit-blue] rounded-[3rem]" />
                                 ) : (
                                     <UserCircleIcon className="h-24 w-24 text-gray-300" aria-hidden="true" />
                                 )}
