@@ -1,6 +1,6 @@
 function Footer() {
     return (
-        <footer className="relative bottom-0 w-[100vw] bg-[--dit-dark-blue]">
+        <footer className="relative bottom-0 bg-[--dit-dark-blue]">
             <div className="flex justify-between items-center px-6 py-4 lg:px-8">
                 <p className="text-xs leading-5 text-gray-400">© 2023 Delta Global Serviços e Tecnologia S/A • Todos os direitos reservados.</p>
                 <div className="flex gap-4">
