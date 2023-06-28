@@ -1,4 +1,4 @@
-![1687925237053](https://file+.vscode-resource.vscode-cdn.net/home/luiz.utzig%40messem.local/Documents/dev/dit/image/README/1687925237053.png)
+![1687925237053](image/README/1687925237053.png)
 
 # DIT - Delta Institute of Technology (Cadastro de alunos)
 
