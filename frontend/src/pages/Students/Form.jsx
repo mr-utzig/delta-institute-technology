@@ -172,7 +172,7 @@ function StudentForm() {
                                 >
                                     Selecionar foto
                                 </label>
-                                <input type="file" id="photo" className='hidden' onChange={handlePhotoSelection} />
+                                <input type="file" id="photo" className='hidden' accept='image/*' onChange={handlePhotoSelection} />
                             </div>
                         </div>
                         <div className="col-span-6 sm:col-span-3">
